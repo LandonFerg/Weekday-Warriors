@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Three.js GLTF Loader</title>
+    <title>Weekday Warriors</title>
+    <!-- Get fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script type="importmap">
     {
       "imports": {
@@ -13,11 +17,77 @@
     }
     </script>
     <style>
-        body { margin: 0; }
-        canvas { display: block; }
+        body { 
+            margin: 0; 
+            font-family: Arial, sans-serif;
+            background-color: #404040; /* Matching the visualizer background */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            padding: 20px;
+        }
+       .title-image {
+            width: 100%;
+            height: auto;
+            padding-bottom: 0px;
+        }
+        
+        .visualizer-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .robot-name {
+            position: absolute;
+            top: 60px;
+            right: 60px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 5px 10px;
+            font-size: 24px;
+            font-family: 'Archivo', sans-serif;
+            font-weight: 900;
+            font-style: italic;
+        }
+
+        #visualizer {
+            width: 100%;
+            height: 400px; /* Adjust as needed */
+            background-color: #404040;
+        }
+
+        /* Media query for larger screens */
+        @media screen and (min-width: 768px) {
+            .title-image {
+                width: auto;
+                max-width: 50%;
+                max-height: 200px; /* Adjust this value as needed */
+                padding-bottom: 0px;
+            }
+
+            #visualizer {
+              height: 600px;
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="content">
+        <img src="wkdy_title.png" alt="Weekday Warriors" class="title-image">
+        <div class="visualizer-container">
+          <div id="visualizer"></div>
+          <div class="robot-name">"FREE NOOGIES"</div>
+        </div>
+    </div>
     <script type="module" src="main.js"></script>
 </body>
 </html>
