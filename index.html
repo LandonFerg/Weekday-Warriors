@@ -37,6 +37,15 @@
             width: 100%;
             height: auto;
             padding-bottom: 50px;
+            padding-right: 5px;
+        }
+
+        .visualizers-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 1300px;
         }
         
         .visualizer-container {
@@ -45,6 +54,7 @@
             max-width: 650px;
             margin: 0 auto;
         }
+
 
         .robot-name {
             position: absolute;
@@ -82,6 +92,9 @@
                 max-width: 50%;
                 max-height: 200px; /* Adjust this value as needed */
                 padding-bottom: 0px;
+
+                /* doesnt look centered to me on big screens */
+                padding-right: 20px;
             }
 
             #visualizer {
@@ -89,6 +102,11 @@
             }
             #visualizer2 {
               height: 600px;
+            }
+
+            .visualizers-grid {
+                flex-direction: row;
+                justify-content: center;
             }
 
             .robot-name {
@@ -112,16 +130,19 @@
     <div class="content">
         <img src="wkdy_title.png" alt="Weekday Warriors" class="title-image">
 
-        <div class="visualizer-container">
-          <div id="visualizer"></div>
-          <div class="robot-name">"FREE NOOGIES"</div>
-        </div>
+        <div class="visualizers-grid">
+          <div class="visualizer-container">
+            <div id="visualizer"></div>
+            <div class="robot-name">"FREE NOOGIES"</div>
+          </div>
 
-        <div class="visualizer-container">
-          <div id="visualizer2"></div>
-          <div class="robot-name">"LUNCHPAD"</div>
-        </div>
+          <div class="visualizer-container">
+            <div id="visualizer2"></div>
+            <div class="robot-name">"LUNCHPAD"</div>
+          </div>
+      </div>
     </div>
-    <script type="module" src="main.js"></script>
+
+    <script type="module" src="./js/main.js"></script>
 </body>
 </html>
