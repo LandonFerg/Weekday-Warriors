@@ -12,12 +12,17 @@ class RobotVisualizer {
     constructor(containerId, modelPath) {
         this.container = document.getElementById(containerId);
         this.modelPath = modelPath;
+        this.lastTime = 0;
+        this.rotationSpeed = 0.055;
         this.setup();
     }
 
     setup() {
         this.scene = new THREE.Scene();
-        this.renderer = new THREE.WebGLRenderer({ antialias: window.innerWidth > 768 });
+        this.renderer = new THREE.WebGLRenderer({ 
+            antialias: window.innerWidth > 768,
+            powerPreference: "high-performance"
+        });
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
         this.renderer.setClearColor(0x404040);
         this.container.appendChild(this.renderer.domElement);
@@ -29,6 +34,9 @@ class RobotVisualizer {
         this.setupLights();
         this.setupPostProcessing();
         this.loadModel();
+
+        // Set pixel ratio for better resolution on high-DPI screens
+        this.renderer.setPixelRatio(window.devicePixelRatio);
 
         window.addEventListener('resize', () => this.onWindowResize(), false);
     }
@@ -43,6 +51,13 @@ class RobotVisualizer {
 
     setupPostProcessing() {
         this.composer = new EffectComposer(this.renderer);
+        if(window.innerWidth < 768)
+        {
+            this.composer.setPixelRatio(window.devicePixelRatio*0.8);
+        }
+        else{
+            this.composer.setPixelRatio(window.devicePixelRatio);
+        }
         const renderPass = new RenderPass(this.scene, this.camera);
         this.composer.addPass(renderPass);
 
@@ -149,15 +164,20 @@ class RobotVisualizer {
         this.controls.update();
     }
 
-    animate(time) {
+    animate(currentTime) {
         requestAnimationFrame((t) => this.animate(t));
-        
+
+        // Convert time to seconds
+        currentTime *= 0.001;
+
+        // Calculate delta time
+        const deltaTime = currentTime - this.lastTime;
+        this.lastTime = currentTime;
+
         if (this.modelGroup) {
-            // Adjust rotation speed based on frame rate
-            const delta = time - (this.lastTime || 0);
-            this.lastTime = time;
-            const rotationSpeed = 0.0005 * (16.67 / delta); // 16.67 ms is approx. 60 FPS
-            this.modelGroup.rotation.z += rotationSpeed;
+            // Calculate rotation based on fixed rotation speed
+            const rotationAngle = this.rotationSpeed * Math.PI * 2 * deltaTime;
+            this.modelGroup.rotation.z += rotationAngle;
         }
 
         this.controls.update();
@@ -171,6 +191,7 @@ class RobotVisualizer {
         this.composer.setSize(this.container.clientWidth, this.container.clientHeight);
         this.outlinePass.setSize(this.container.clientWidth, this.container.clientHeight);
         this.setCameraSettings();
+        this.setOutlineParameters(); // Update outline parameters on resize
     }
 }
 
