@@ -188,10 +188,10 @@ class RobotVisualizer {
         this.camera.aspect = this.container.clientWidth / this.container.clientHeight;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
-        this.composer.setSize(this.container.clientWidth, this.container.clientHeight);
-        this.outlinePass.setSize(this.container.clientWidth, this.container.clientHeight);
+        //this.composer.setSize(this.container.clientWidth, this.container.clientHeight);
+        //this.outlinePass.setSize(this.container.clientWidth, this.container.clientHeight);
         this.setCameraSettings();
-        this.setOutlineParameters(); // Update outline parameters on resize
+        //this.setOutlineParameters(); // Update outline parameters on resize
     }
 }
 
