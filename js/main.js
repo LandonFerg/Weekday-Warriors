@@ -17,7 +17,7 @@ class RobotVisualizer {
 
     setup() {
         this.scene = new THREE.Scene();
-        this.renderer = new THREE.WebGLRenderer();
+        this.renderer = new THREE.WebGLRenderer({ antialias: window.innerWidth > 768 });
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
         this.renderer.setClearColor(0x404040);
         this.container.appendChild(this.renderer.domElement);
@@ -94,7 +94,8 @@ class RobotVisualizer {
                     float normalValue = (dot(vNormal, vec3(0, 0, 1)) * 0.5 + 0.5) * normalScale;
                     gl_FragColor = vec4(baseColor, 1.0) * (0.5 + normalValue);
                 }
-            `
+            `,
+            precision: window.innerWidth <= 768 ? 'mediump' : 'highp'
         });
 
         this.model.traverse((child) => {
@@ -134,7 +135,6 @@ class RobotVisualizer {
         this.modelGroup.rotation.x = -Math.PI / 2;
     }
 
-    // set camera settings for mobile & desktop devices
     setCameraSettings() {
         if (window.innerWidth <= 768) {
             this.controls.enableRotate = false;
@@ -149,11 +149,17 @@ class RobotVisualizer {
         this.controls.update();
     }
 
-    animate() {
-        requestAnimationFrame(() => this.animate());
+    animate(time) {
+        requestAnimationFrame((t) => this.animate(t));
+        
         if (this.modelGroup) {
-            this.modelGroup.rotation.z += 0.002;
+            // Adjust rotation speed based on frame rate
+            const delta = time - (this.lastTime || 0);
+            this.lastTime = time;
+            const rotationSpeed = 0.0005 * (16.67 / delta); // 16.67 ms is approx. 60 FPS
+            this.modelGroup.rotation.z += rotationSpeed;
         }
+
         this.controls.update();
         this.composer.render();
     }
@@ -168,10 +174,10 @@ class RobotVisualizer {
     }
 }
 
-// Create instances for each  (optimized versions using https://glb.babylonpress.org/)
+// Create instances for each robot (optimized versions using https://glb.babylonpress.org/)
 const noogiesVisualizer = new RobotVisualizer('visualizer', '../gltfs/noogie-opt.glb');
 const lunchpadVisualizer = new RobotVisualizer('visualizer2', '../gltfs/lp-opt.glb');
 
 // Start animation loops
-noogiesVisualizer.animate();
-lunchpadVisualizer.animate();
+noogiesVisualizer.animate(0);
+lunchpadVisualizer.animate(0);
