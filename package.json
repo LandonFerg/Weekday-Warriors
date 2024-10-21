@@ -1,0 +1,23 @@
+{
+  "name": "Robot-CAD",
+  "version": "1.0.0",
+  "description": "![Weekday Warriors](https://github.com/LandonFerg/Robot-CAD/blob/master/wkdy_title.png?raw=true)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LandonFerg/Robot-CAD.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LandonFerg/Robot-CAD/issues"
+  },
+  "homepage": "https://github.com/LandonFerg/Robot-CAD#readme",
+  "dependencies": {
+    "three": "^0.168.0"
+  }
+}
