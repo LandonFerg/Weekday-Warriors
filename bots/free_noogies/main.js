@@ -97,7 +97,9 @@ class RobotVisualizer {
                 this.animate(0);
             },
             (progress) => {
-                const percent = (progress.loaded / progress.total * 100).toFixed(0);
+                const percent = Math.min(
+                    (progress.loaded / progress.total * 100).toFixed(0),
+                                100);
                 const loadingText = document.querySelector('.loading-text');
                 if (loadingText) {
                     loadingText.textContent = `Loading ${percent}%`;
