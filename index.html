@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,112.3,100..900;1,112.3,100..900&family=Just+Another+Hand&display=swap" rel="stylesheet">
+    
     <script type="importmap">
     {
       "imports": {
@@ -50,7 +52,7 @@
         .title-image {
             width: 100%;
             height: auto;
-            padding-bottom: 50px;
+            padding-bottom: 120px;
             padding-right: 5px;
         }
 
@@ -104,6 +106,15 @@
             font-family: 'Archivo', sans-serif;
             font-weight: 900;
             font-style: italic;
+        }
+
+        .robot-class {
+            position: absolute;
+            top: -50px;
+            color: white;
+            padding: 10px 0px;
+            font-size: 26px;
+            font-family: 'Just Another Hand', cursive;
         }
 
         canvas {
@@ -238,6 +249,16 @@
                 font-style: italic;
                 transition: all 0.3s ease;
             }
+
+            .robot-class {
+                position: absolute;
+                top: 90px;
+                color: white;
+                padding: 10px 0px;
+                right:60px;
+                font-size: 26px;
+                font-family: 'Just Another Hand', cursive;
+            }
             
             /* Adjacent carousel items should be positioned differently */
             .carousel-item {
@@ -268,6 +289,7 @@
                         <div id="visualizer-1" class="visualizer"></div>
                         <a href="/bots/free_noogies">
                             <div class="robot-name">"FREE NOOGIES"</div>
+                            <div class="robot-class">ANTWEIGHT</div>
                         </a>
                     </div>
                 </div>
@@ -278,6 +300,7 @@
                         <div id="visualizer-2" class="visualizer"></div>
                         <a href="/bots/lunchpad">
                             <div class="robot-name">"LUNCHPAD"</div>
+                            <div class="robot-class">ANTWEIGHT</div>
                         </a>
                     </div>
                 </div>
@@ -287,6 +310,7 @@
                         <div id="visualizer-3" class="visualizer"></div>
                         <a href="/bots/nausea">
                             <div class="robot-name">"NAUSEA"</div>
+                            <div class="robot-class">ANTWEIGHT</div>
                         </a>
                     </div>
                 </div>
@@ -296,6 +320,7 @@
                         <div id="visualizer-4" class="visualizer"></div>
                         <a href="/bots/tonka">
                             <div class="robot-name">"TONKA JAHARI"</div>
+                            <div class="robot-class">FAIRYWEIGHT</div>
                         </a>
                     </div>
                 </div>
