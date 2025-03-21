@@ -75,6 +75,10 @@ class RobotVisualizer {
                 this.setCameraSettings();
                 this.outlinePass.selectedObjects = [this.model];
                 this.composer.render();
+
+                if (this.modelPath.includes("nausea")) {
+                    this.modelGroup.position.y = 0; // Adjust this value as needed
+                }
             },
             (progress) => {
                 console.log(`Loading ${this.modelPath}: ${(progress.loaded / progress.total * 100).toFixed(2)}%`);
@@ -244,8 +248,8 @@ class CarouselController {
         // Robot visualizers
         this.visualizers = [
             new RobotVisualizer('visualizer-1', '../gltfs/noogie-opt.glb'),
-            new RobotVisualizer('visualizer-2', '../gltfs/lp-opt.glb')
-            // Add more visualizers as needed
+            new RobotVisualizer('visualizer-2', '../gltfs/lp-opt.glb'),
+            new RobotVisualizer('visualizer-3', '../gltfs/nausea.glb')
         ];
         
         // Set the first visualizer as active

@@ -148,6 +148,10 @@ class RobotVisualizer {
         this.modelGroup.add(this.model);
         this.modelGroup.position.y = 0.03;
         this.modelGroup.rotation.x = -Math.PI / 2;
+
+        if (this.modelPath.includes("nausea")) {
+            this.model.translateY(-0.12);
+        }
     }
 
     setCameraSettings() {
