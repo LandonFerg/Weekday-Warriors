@@ -79,6 +79,10 @@ class RobotVisualizer {
                 if (this.modelPath.includes("nausea")) {
                     this.modelGroup.position.y = 0; // Adjust this value as needed
                 }
+
+                if (this.modelPath.includes("tonka")) {
+                    this.modelGroup.position.y = 0; // Adjust this value as needed
+                }
             },
             (progress) => {
                 console.log(`Loading ${this.modelPath}: ${(progress.loaded / progress.total * 100).toFixed(2)}%`);
@@ -249,7 +253,8 @@ class CarouselController {
         this.visualizers = [
             new RobotVisualizer('visualizer-1', '../gltfs/noogie-opt.glb'),
             new RobotVisualizer('visualizer-2', '../gltfs/lp-opt.glb'),
-            new RobotVisualizer('visualizer-3', '../gltfs/nausea.glb')
+            new RobotVisualizer('visualizer-3', '../gltfs/nausea.glb'),
+            new RobotVisualizer('visualizer-4', '../gltfs/tonka.glb')
         ];
         
         // Set the first visualizer as active
