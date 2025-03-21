@@ -17,13 +17,19 @@
     }
     </script>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+        
         body { 
             margin: 0; 
+            padding: 0;
             font-family: Arial, sans-serif;
             background-color: #404040; /* Matching the visualizer background */
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
         }
         .content {
             display: flex;
@@ -32,29 +38,61 @@
             justify-content: center;
             flex-grow: 1;
             padding: 20px;
+            max-width: 100vw;
+            overflow-x: hidden;
         }
-       .title-image {
+        
+        /* Ensure the body doesn't have horizontal overflow */
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+        .title-image {
             width: 100%;
             height: auto;
             padding-bottom: 50px;
             padding-right: 5px;
         }
 
-        .visualizers-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        /* Carousel Styles */
+        .carousel-container {
             width: 100%;
-            max-width: 1300px;
+            max-width: 600px;
+            position: relative;
+            margin: 0 auto;
+            padding: 20px 0;
+            overflow: visible;
+        }
+        
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
+            align-items: center;
+        }
+        
+        .carousel-item {
+            min-width: 100%;
+            position: relative;
+            transition: all 0.5s ease-in-out;
+            opacity: 0.4;
+            transform: scale(0.8);
+            box-sizing: border-box;
+        }
+        
+        .carousel-item.active {
+            opacity: 1;
+            transform: scale(0.95); /* Reduced from 1 to 0.95 */
+            z-index: 10;
         }
         
         .visualizer-container {
             position: relative;
             width: 100%;
-            max-width: 650px;
+            max-width: 600px; /* Reduced from 650px */
             margin: 0 auto;
+            box-sizing: border-box;
         }
-
 
         .robot-name {
             position: absolute;
@@ -72,81 +110,196 @@
           touch-action: auto!important;
         }
 
-        #visualizer {
+        .visualizer {
             width: 100%;
-            height: 300px; /* Adjust as needed */
-            background-color: #404040;
-        }
-
-        #visualizer2 {
-            width: 100%;
-            height: 300px; /* Adjust as needed */
+            height: 300px;
             background-color: #404040;
         }
         
+        /* Navigation buttons */
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .carousel-button {
+            background-color: #222;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            margin: 0 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .carousel-button:hover {
+            background-color: #555;
+        }
+        
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #777;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        
+        .indicator.active {
+            background-color: #fff;
+        }
+
+        .carousel-container {
+            perspective: 800px;
+            max-height: 600px;
+        }
+        
+        .carousel {
+            transform-style: preserve-3d;
+            height: 100%;
+        }
+        
+        /* Add more polish to the carousel buttons */
+        .carousel-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 100;
+        }
+        
+        .carousel-button:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+        
+        .carousel-button:hover:after {
+            transform: translateY(0);
+        }
+        
+        /* Enhance indicator styling */
+        .indicator {
+            transition: all 0.3s ease;
+            transform: scale(1);
+        }
+        
+        .indicator:hover {
+            transform: scale(1.2);
+        }
+        
+        .indicator.active {
+            transform: scale(1.3);
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+        }
 
         /* Media query for larger screens */
         @media screen and (min-width: 768px) {
             .title-image {
                 width: auto;
                 max-width: 50%;
-                max-height: 200px; /* Adjust this value as needed */
+                max-height: 200px;
                 padding-bottom: 0px;
-
-                /* doesnt look centered to me on big screens */
                 padding-right: 20px;
             }
 
-            #visualizer {
+            .visualizer {
               height: 600px;
-            }
-            #visualizer2 {
-              height: 600px;
-            }
-
-            .visualizers-grid {
-                flex-direction: row;
-                justify-content: center;
             }
 
             .robot-name {
-            position: absolute;
-            top: 60px;
-            right: 60px;
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            padding: 5px 10px;
-            font-size: 24px;
-            font-family: 'Archivo', sans-serif;
-            font-weight: 900;
-            font-style: italic;
-          }
-          
+                position: absolute;
+                top: 60px;
+                right: 60px;
+                background-color: rgba(0, 0, 0, 0.5);
+                color: white;
+                padding: 5px 10px;
+                font-size: 24px;
+                font-family: 'Archivo', sans-serif;
+                font-weight: 900;
+                font-style: italic;
+                transition: all 0.3s ease;
+            }
+            
+            /* Adjacent carousel items should be positioned differently */
+            .carousel-item {
+                transform: scale(0.8) translateX(0);
+            }
+            
+            .carousel-item.active {
+                transform: scale(0.95) translateX(0);
+            }
+            
+            /* Adjust visualizer height for desktop */
+            .visualizer {
+                height: 500px;
+            }
         }
-        
     </style>
 </head>
 <body>
     <div class="content">
         <img src="wkdy_title.png" alt="Weekday Warriors" class="title-image">
 
-        <div class="visualizers-grid">
-          <div class="visualizer-container">
-            <div id="visualizer"></div>
-            <a href="/bots/free_noogies">
-            <div class="robot-name">"FREE NOOGIES"</div>
-            </a>
-          </div>
-
-          <div class="visualizer-container">
-            <div id="visualizer2"></div>
-            <a href="/bots/lunchpad">
-              <div class="robot-name">"LUNCHPAD"</div>
-            </a>
-          </div>
-      </div>
+        <!-- Carousel Container -->
+        <div class="carousel-container">
+            <div class="carousel" id="robot-carousel">
+                <!-- Robot 1 -->
+                <div class="carousel-item active">
+                    <div class="visualizer-container">
+                        <div id="visualizer-1" class="visualizer"></div>
+                        <a href="/bots/free_noogies">
+                            <div class="robot-name">"FREE NOOGIES"</div>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Robot 2 -->
+                <div class="carousel-item next">
+                    <div class="visualizer-container">
+                        <div id="visualizer-2" class="visualizer"></div>
+                        <a href="/bots/lunchpad">
+                            <div class="robot-name">"LUNCHPAD"</div>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Add more robot entries as needed -->
+            </div>
+            
+            <!-- Navigation Controls -->
+            <div class="carousel-nav">
+                <button class="carousel-button" id="prev-button">←</button>
+                <button class="carousel-button" id="next-button">→</button>
+            </div>
+            
+            <!-- Indicators -->
+            <div class="carousel-indicators" id="carousel-indicators">
+                <span class="indicator active" data-index="0"></span>
+                <span class="indicator" data-index="1"></span>
+                <!-- Add more indicators as needed -->
+            </div>
+        </div>
     </div>
 
-    <script type="module" src="./js/main.js"></script>
+    <script type="module" src="./js/carousel.js"></script>
 </body>
 </html>
