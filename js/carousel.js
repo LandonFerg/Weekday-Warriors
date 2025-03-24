@@ -1,6 +1,7 @@
 // carousel.js
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
@@ -15,7 +16,9 @@ class RobotVisualizer {
         this.rotationSpeed = 0.055;
         this.isActive = false; // Track if this visualizer is currently visible
         this.activityFactor = 1.0; // Full activity by default
+        this.isLoaded = false; // Track if the model has been loaded
         this.setup();
+        this.createLoadingIndicator();
     }
 
     setup() {
@@ -38,6 +41,45 @@ class RobotVisualizer {
 
         // Set pixel ratio for better resolution on high-DPI screens
         this.renderer.setPixelRatio(window.devicePixelRatio);
+    }
+    
+    createLoadingIndicator() {
+        // Create a loading container
+        this.loadingContainer = document.createElement('div');
+        this.loadingContainer.style.position = 'absolute';
+        this.loadingContainer.style.top = '50%';
+        this.loadingContainer.style.left = '50%';
+        this.loadingContainer.style.transform = 'translate(-50%, -50%)';
+        this.loadingContainer.style.textAlign = 'center';
+        this.loadingContainer.style.zIndex = '100';
+        
+        // Create loading text
+        const loadingText = document.createElement('div');
+        loadingText.textContent = 'Loading...';
+        loadingText.style.color = 'white';
+        loadingText.style.marginBottom = '10px';
+        loadingText.style.fontFamily = 'Arial, sans-serif';
+        
+        // Create loading bar container
+        this.loadingBarContainer = document.createElement('div');
+        this.loadingBarContainer.style.width = '150px';
+        this.loadingBarContainer.style.height = '10px';
+        this.loadingBarContainer.style.border = '1px solid white';
+        this.loadingBarContainer.style.borderRadius = '5px';
+        this.loadingBarContainer.style.overflow = 'hidden';
+        
+        // Create loading bar
+        this.loadingBar = document.createElement('div');
+        this.loadingBar.style.width = '0%';
+        this.loadingBar.style.height = '100%';
+        this.loadingBar.style.backgroundColor = 'white';
+        this.loadingBar.style.transition = 'width 0.3s';
+        
+        // Append elements
+        this.loadingBarContainer.appendChild(this.loadingBar);
+        this.loadingContainer.appendChild(loadingText);
+        this.loadingContainer.appendChild(this.loadingBarContainer);
+        this.container.appendChild(this.loadingContainer);
     }
 
     setupLights() {
@@ -63,10 +105,17 @@ class RobotVisualizer {
     }
 
     loadModel() {
+        /* Draco loader for better performance */
+        const dracoLoader = new DRACOLoader();
+        dracoLoader.setDecoderPath('/js/draco/');
+
         const loader = new GLTFLoader();
+        loader.setDRACOLoader(dracoLoader);
+
         loader.load(
             this.modelPath,
             (gltf) => {
+                // Model loaded successfully
                 this.model = gltf.scene;
                 this.applyMaterial();
                 this.scene.add(this.model);
@@ -76,19 +125,37 @@ class RobotVisualizer {
                 this.outlinePass.selectedObjects = [this.model];
                 this.composer.render();
 
+                /* Special cases for these two */
                 if (this.modelPath.includes("nausea")) {
-                    this.modelGroup.position.y = 0; // Adjust this value as needed
+                    this.modelGroup.position.y = 0;
                 }
 
                 if (this.modelPath.includes("tonka")) {
-                    this.modelGroup.position.y = 0; // Adjust this value as needed
+                    this.modelGroup.position.y = 0;
+                }
+                
+                // Hide loading indicator when model is loaded
+                this.isLoaded = true;
+                if (this.loadingContainer) {
+                    this.loadingContainer.style.display = 'none';
                 }
             },
             (progress) => {
-                console.log(`Loading ${this.modelPath}: ${(progress.loaded / progress.total * 100).toFixed(2)}%`);
+                // Update loading progress
+                const percentLoaded = (progress.loaded / progress.total * 100).toFixed(2);
+                console.log(`Loading ${this.modelPath}: ${percentLoaded}%`);
+                
+                // Update loading bar
+                if (this.loadingBar && progress.total > 0) {
+                    this.loadingBar.style.width = `${percentLoaded}%`;
+                }
             },
             (error) => {
                 console.error(`Error loading ${this.modelPath}:`, error);
+                // Show error in loading indicator
+                if (this.loadingContainer) {
+                    this.loadingContainer.innerHTML = `<div style="color: red;">Error loading model</div>`;
+                }
             }
         );
     }
@@ -172,10 +239,8 @@ class RobotVisualizer {
     animate(currentTime) {
         if (!this.isActive) return; // Only animate if active
         
-        // Convert time to seconds
         currentTime *= 0.001;
 
-        // Calculate delta time
         const deltaTime = currentTime - this.lastTime;
         this.lastTime = currentTime;
 
@@ -217,6 +282,13 @@ class RobotVisualizer {
             // When activated, reset last time to current time to avoid jumps
             this.lastTime = performance.now() * 0.001;
             
+            // Show loading indicator if model is not yet loaded
+            if (!this.isLoaded && this.loadingContainer) {
+                this.loadingContainer.style.display = 'block';
+            } else if (this.loadingContainer) {
+                this.loadingContainer.style.display = 'none';
+            }
+            
             // Adjust model and rendering based on activity factor
             if (this.model) {
                 // We can adjust model appearance based on activity level
@@ -233,6 +305,11 @@ class RobotVisualizer {
             // Render once to make sure the model is visible immediately
             if (this.composer) {
                 this.composer.render();
+            }
+        } else {
+            // Hide loading indicator when not active
+            if (this.loadingContainer) {
+                this.loadingContainer.style.display = 'none';
             }
         }
     }
@@ -253,7 +330,7 @@ class CarouselController {
         this.visualizers = [
             new RobotVisualizer('visualizer-1', '../gltfs/noogie-opt.glb'),
             new RobotVisualizer('visualizer-2', '../gltfs/lp-opt.glb'),
-            new RobotVisualizer('visualizer-3', '../gltfs/nausea.glb'),
+            new RobotVisualizer('visualizer-3', '../gltfs/nausea-opt.glb'),
             new RobotVisualizer('visualizer-4', '../gltfs/tonka.glb')
         ];
         
@@ -305,7 +382,7 @@ class CarouselController {
     }
     
     updateCarousel() {
-        // We'll still move the carousel but with a different positioning approach
+        // Move carousel
         const offset = this.currentIndex * 100;
         this.carousel.style.transform = `translateX(-${offset}%)`;
         
@@ -320,14 +397,14 @@ class CarouselController {
             indicator.classList.toggle('active', index === this.currentIndex);
         });
         
-        // Activate current visualizer, deactivate others
+        // Activate current visualizer, "deactivate" others
         this.visualizers.forEach((visualizer, index) => {
             // Keep adjacent visualizers semi-active for better performance
             // The main one is fully active, adjacent ones are at reduced activity
             if (index === this.currentIndex) {
                 visualizer.setActive(true);
             } else if (Math.abs(index - this.currentIndex) === 1) {
-                // Adjacent visualizers are semi-active (visible but not animating at full rate)
+                // Adjacent visualizers are semi-active
                 visualizer.setActive(true, 0.3); // Pass a reduced animation factor
             } else {
                 visualizer.setActive(false);
@@ -338,13 +415,11 @@ class CarouselController {
     startAnimation() {
         const animate = (time) => {
             requestAnimationFrame(animate);
-            
-            // Animate only the active visualizer
+            // Animate only the active visualizer...
             this.visualizers.forEach(visualizer => {
                 visualizer.animate(time);
             });
         };
-        
         requestAnimationFrame(animate);
     }
     
