@@ -331,7 +331,7 @@ class CarouselController {
             new RobotVisualizer('visualizer-1', '../gltfs/noogie-opt.glb'),
             new RobotVisualizer('visualizer-2', '../gltfs/lp-opt.glb'),
             new RobotVisualizer('visualizer-3', '../gltfs/nausea-opt.glb'),
-            new RobotVisualizer('visualizer-4', '../gltfs/tonka.glb')
+            new RobotVisualizer('visualizer-4', '../gltfs/tonka-opt.glb')
         ];
         
         // Set the first visualizer as active
