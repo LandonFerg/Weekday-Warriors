@@ -34,6 +34,7 @@ class RobotVisualizer {
         this.camera = new THREE.PerspectiveCamera(40, this.container.clientWidth / this.container.clientHeight, 0.01, 1000);
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
         this.controls.enableZoom = false;
+        this.controls.enablePan = false;
 
         this.setupLights();
         this.setupPostProcessing();
