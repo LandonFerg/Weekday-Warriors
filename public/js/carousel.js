@@ -108,7 +108,7 @@ class RobotVisualizer {
     loadModel() {
         /* Draco loader for better performance */
         const dracoLoader = new DRACOLoader();
-        dracoLoader.setDecoderPath('/js/draco/');
+        dracoLoader.setDecoderPath('public/js/draco/');
 
         const loader = new GLTFLoader();
         loader.setDRACOLoader(dracoLoader);
@@ -329,10 +329,10 @@ class CarouselController {
         
         // Robot visualizers
         this.visualizers = [
-            new RobotVisualizer('visualizer-1', '../gltfs/noogie-opt.glb'),
-            new RobotVisualizer('visualizer-2', '../gltfs/lp-opt-old.glb'),
-            new RobotVisualizer('visualizer-3', '../gltfs/nausea-opt.glb'),
-            new RobotVisualizer('visualizer-4', '../gltfs/tonka-opt.glb')
+            new RobotVisualizer('visualizer-1', '/public/gltfs/noogie-opt.glb'),
+            new RobotVisualizer('visualizer-2', '/public/gltfs/lp-opt-old.glb'),
+            new RobotVisualizer('visualizer-3', '/public/gltfs/nausea-opt.glb'),
+            new RobotVisualizer('visualizer-4', '/public/gltfs/tonka-opt.glb')
         ];
         
         // Set the first visualizer as active
