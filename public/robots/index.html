@@ -260,6 +260,9 @@
             font-weight: 900;
             font-style: italic;
             margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         .win-loss {
@@ -303,7 +306,14 @@
             padding: 4px 0;
             font-weight: 700;
             font-size: 14px;
+            display: grid;
+            grid-template-columns: 70px 1fr;
+        }
 
+        /* stop name from being truncated */
+        .stats-list li:first-child {
+            display: block;
+            padding-bottom: 5px;
         }
         
         .title-image {
@@ -410,7 +420,7 @@
             <div class="robot-card">
                 <div class="robot-image">
                     <div class="win-loss-m">
-                        <span class="wins">W: 7</span> / <span class="losses">L: 2</span>
+                        <span class="wins">W: 5</span> / <span class="losses">L: 3</span>
                     </div>
                     <div class="robot-name">NAUSEA</div>
                     <img src="../images/card-placeholder2.png">
@@ -484,15 +494,15 @@
             <div class="robot-card">
                 <div class="robot-image">
                     <div class="win-loss-m">
-                        <span class="wins">W: 7</span> / <span class="losses">L: 2</span>
+                        <span class="wins">W: 3</span> / <span class="losses">L: 7</span>
                     </div>
                     <div class="robot-name">LUNCHPAD</div>
                     <img src="../images/card-placeholder4.png">
                 </div>
                 <div class="robot-details">
                     <div class="win-loss">
-                        <span class="wins">W: 4</span> / <span class="losses">L: 4</span>
-                        <span class="knockouts">KOs: 2</span>
+                        <span class="wins">W: 3</span> / <span class="losses">L: 7</span>
+                        <span class="knockouts">KOs: 1</span>
                     </div>
                     <ul class="stats-list">
                         <li>
@@ -521,14 +531,14 @@
             <div class="robot-card">
                 <div class="robot-image">
                     <div class="win-loss-m">
-                        <span class="wins">W: 7</span> / <span class="losses">L: 2</span>
+                        <span class="wins">W: 3</span> / <span class="losses">L: 1</span>
                     </div>
                     <div class="robot-name">MR. FLIP</div>
                     <img src="../images/card-placeholder5.png">
                 </div>
                 <div class="robot-details">
                     <div class="win-loss">
-                        <span class="wins">W: 4</span> / <span class="losses">L: 4</span>
+                        <span class="wins">W: 3</span> / <span class="losses">L: 1</span>
                         <span class="knockouts">KOs: 2</span>
                     </div>
                     <ul class="stats-list">
