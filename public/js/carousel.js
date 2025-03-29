@@ -329,10 +329,11 @@ class CarouselController {
         
         // Robot visualizers
         this.visualizers = [
-            new RobotVisualizer('visualizer-1', '/public/gltfs/noogie-opt.glb'),
-            new RobotVisualizer('visualizer-2', '/public/gltfs/lp-opt-old.glb'),
-            new RobotVisualizer('visualizer-3', '/public/gltfs/nausea-opt.glb'),
-            new RobotVisualizer('visualizer-4', '/public/gltfs/tonka-opt.glb')
+            new RobotVisualizer('visualizer-1', '/public/gltfs/sunday-scaries-opt.glb'),
+            new RobotVisualizer('visualizer-2', '/public/gltfs/noogie-opt.glb'),
+            new RobotVisualizer('visualizer-3', '/public/gltfs/lp-opt-old.glb'),
+            new RobotVisualizer('visualizer-4', '/public/gltfs/nausea-opt.glb'),
+            new RobotVisualizer('visualizer-5', '/public/gltfs/tonka-opt.glb')
         ];
         
         // Set the first visualizer as active

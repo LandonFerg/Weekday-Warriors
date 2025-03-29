@@ -4,15 +4,351 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico" />
-    <title>Weekday Warriors</title>
+    <title>Weekday Warriors - Robots</title>
     <!-- Get fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,112.3,100..900;1,112.3,100..900&family=Just+Another+Hand&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main-styles.css">
-    <script type="importmap">
-    </script>
+    <style>
+        .robot-cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .robot-card {
+            background-color: #333;
+            border-radius: 10px;
+            overflow: visible; /* Changed from hidden to allow image overflow */
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            margin-bottom: 30px; /* Added to prevent cards from being too close */
+            margin-top: 40px; /* Added space for the name banner above */
+        }
+        
+        .robot-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .robot-image {
+            width: 100%;
+            height: 250px;
+            background-color: #222;
+            position: relative;
+            overflow: visible; /* Changed from 'hidden' to allow overflow */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        
+        .robot-image img {
+            width: 120%; /* Larger than container to create overflow effect */
+            max-height: 280px; /* Taller than the container */
+            object-fit: contain;
+            position: absolute;
+            bottom: -30px; /* Makes image overflow into stats area */
+            z-index: 5; /* Places image above card content but below text */
+            transform-origin: bottom center;
+            transition: transform 0.3s ease;
+        }
+        
+        .robot-card:hover .robot-image img {
+            transform: translateY(5px) scale(1.02); /* Subtle "pop" effect on hover */
+        }
+        
+        .robot-image-placeholder {
+            width: 80%;
+            height: 80%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Archivo', sans-serif;
+            font-weight: 900;
+            font-style: italic;
+            font-size: 24px;
+            color: #555;
+            text-align: center;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+        }
+        
+        .robot-details {
+            padding: 20px;
+            color: white;
+            position: relative;
+            z-index: 1; /* Ensure text appears above the overflowing image */
+        }
+        
+        .robot-name {
+            position: absolute;
+            top: -35px;
+            left: 0;
+            right: 0;
+            text-align: right;
+            color: #FF6000;
+            background-color: transparent;
+            padding: 8px 15px;
+            font-size: 24px;
+            font-family: 'Archivo', sans-serif;
+            font-weight: 900;
+            font-style: italic;
+            z-index: 10;
+            transform: translateY(-50%);
+            margin: 0 auto;
+            text-shadow:1px 1px 20px rgb(75, 75, 75);
+        }
+        
+        .robot-class {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 5px 10px;
+            font-size: 18px;
+            font-family: 'Just Another Hand', cursive;
+            z-index: 10;
+            border-radius: 5px;
+        }
+        
+        .stats-list {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+        
+        .stats-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #444;
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Archivo', sans-serif;
+        }
+        
+        .stats-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .stat-label {
+            font-weight: 700;
+            color: #aaa;
+        }
+
+        /* Don't show mobile botname on desktop */
+        .bot-name-m {
+            display: none;
+        }
+        
+        .robot-description {
+            margin-top: 15px;
+            font-family: 'Archivo', sans-serif;
+            line-height: 1.6;
+            background-color: #222;
+            padding: 15px;
+            border-radius: 8px;
+            position: relative;
+        }
+        
+        .robot-description:before {
+            content: 'About';
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background-color: #333;
+            padding: 2px 10px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #aaa;
+            border-radius: 4px;
+        }
+        
+        .win-loss {
+            display: inline-block;
+            background-color: #222;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-top: 5px;
+            font-weight: 700;
+        }
+        
+        .wins {
+            color: #4CAF50;
+        }
+        
+        .losses {
+            color: #F44336;
+        }
+        
+        .knockouts {
+            display: block;
+            font-size: 14px;
+            color: #FFC107;
+            margin-top: 5px;
+            font-weight: 700;
+        }
+        
+        .page-title {
+            text-align: center;
+            font-family: 'Archivo', sans-serif;
+            font-weight: 900;
+            font-style: italic;
+            color: white;
+            margin: 30px 0;
+            font-size: 36px;
+        }
+
+        /* Hide mobile win loss in desktop view */
+        .win-loss-m {
+            display: none;
+        }
+    /* Media query for mobile devices */
+    @media screen and (max-width: 767px) {
+        .robot-cards-container {
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding: 1px;
+        }
+        
+        .robot-card {
+            max-width: 100%;
+            width: 100%;
+            margin: 0px auto;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            height: 140px;
+        }
+        
+        .robot-image {
+            width: 40%;
+            height: 140px;
+            border-top-right-radius: 0;
+            border-bottom-left-radius: 10px;
+            position: relative;
+        }
+        
+        .robot-details {
+            width: 60%;
+            padding: 10px 15px;
+        }
+        
+        /* Hide the robot name in the image section */
+        .robot-image .robot-name {
+            display: none;
+        }
+        
+        /* Show the name in the details section instead */
+        .robot-details:before {
+            content: attr(data-robot-name);
+            display: block;
+            color: #FF6000;
+            font-size: 20px;
+            font-family: 'Archivo', sans-serif;
+            font-weight: 900;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+        
+        .win-loss {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 15;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 5px 8px;
+            margin-top: 0;
+            font-size: 14px;
+        }
+        
+        /* Hide the win-loss div in the details section */
+        .robot-details .win-loss {
+            display: none;
+        }
+        
+        .knockouts {
+            display: inline;
+            margin-left: 5px;
+            font-size: 14px;
+        }
+        
+        .robot-image img {
+            width: 130%;
+            height: auto;
+            max-height: 150px;
+            bottom: -5px;
+        }
+        
+        .robot-description {
+            display: none;
+        }
+        
+        .stats-list {
+            margin: 5px 0;
+        }
+        
+        .stats-list li {
+            padding: 4px 0;
+            font-weight: 700;
+            font-size: 14px;
+
+        }
+        
+        .title-image {
+            padding-bottom: 40px;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            margin: 15px 0;
+        }
+        
+        .robot-class {
+            font-size: 16px;
+            top: 10px;
+            right: 10px;
+        }
+
+        /* Mobile win/loss section (on top of image) */
+        .win-loss-m {
+            display: block;
+            position: absolute;
+            top: 10px;
+            /* left: 10px; */
+            color: white;
+            background-color: transparent;
+            padding: 5px 10px;
+            font-size: 18px;
+            z-index: 10;
+            border-radius: 5px;
+            font-weight: 700;
+            font-family: 'Archivo', sans-serif;
+        }
+
+        /* Mobile bot name */
+        .bot-name-m {
+            display: block;
+            font-weight: 900;
+            text-align: left;
+            font-size: 18px;
+            letter-spacing: 1px;
+            padding-bottom: 10px;
+            font-family: 'Archivo', sans-serif;
+        }
+    }
+    </style>
 </head>
 <body>
     <!-- Main nav bar -->
@@ -29,6 +365,194 @@
     <!-- Title image -->
     <div class="content">
         <img src="../wkdy_title.png" alt="Weekday Warriors" class="title-image">
+        
+        <h1 class="page-title">OUR ROBOTS</h1>
+        
+        <div class="robot-cards-container">
+            <!-- Robot Card 1 -->
+            <div class="robot-card">
+                <div class="robot-image">
+                    <div class="win-loss-m">
+                        <span class="wins">W: 7</span> / <span class="losses">L: 2</span>
+                    </div>
+                    <div class="robot-name">SUNDAY SCARIES</div>
+                    <img src="../images/card-placeholder.png">
+                </div>
+                <div class="robot-details">
+                    <div class="win-loss">
+                        <span class="wins">W: 7</span> / <span class="losses">L: 2</span>
+                        <span class="knockouts">KOs: 5</span>
+                    </div>
+                    <ul class="stats-list">
+                        <li>
+                            <span class="bot-name-m">Sunday Scaries</span>
+                        </li>
+                        <li>
+                            <span class="stat-label">Builder:</span>
+                            <span>Zack</span>
+                        </li>
+                        <li>
+                            <span class="stat-label">Class:</span>
+                            <span>Beetleweight</span>
+                        </li>
+                        <li>
+                            <span class="stat-label">Weapon:</span>
+                            <span>Beater Bar</span>
+                        </li>
+                    </ul>
+                    <div class="robot-description">
+                        Sunday scawies is a vewwy scawwie wobot.
+                    </div>  
+                </div>
+            </div>
+            
+            <!-- Robot Card 2 -->
+            <div class="robot-card">
+                <div class="robot-image">
+                    <div class="win-loss-m">
+                        <span class="wins">W: 7</span> / <span class="losses">L: 2</span>
+                    </div>
+                    <div class="robot-name">NAUSEA</div>
+                    <img src="../images/card-placeholder2.png">
+                </div>
+                <div class="robot-details">
+                    <div class="win-loss">
+                        <span class="wins">W: 5</span> / <span class="losses">L: 3</span>
+                        <span class="knockouts">KOs: 3</span>
+                    </div>
+                    <ul class="stats-list">
+                        <li>
+                            <span class="bot-name-m">Nausea</span>
+                        </li>
+                        <li>
+                            <span class="stat-label">Builder:</span>
+                            <span>Lando</span>
+                        </li>
+                        <li>
+                            <span class="stat-label">Class:</span>
+                            <span>Antweight</span>
+                        </li>
+                        <li>
+                            <span class="stat-label">Weapon:</span>
+                            <span>Undercutter</span>
+                        </li>
+                    </ul>
+                    <div class="robot-description">
+                        NAUSEA is a 4WD direct-drive undercutter. It utilizes a Repeat Robotics hubmotor driving the single-tooth weapon design.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Robot Card 3 -->
+            <div class="robot-card">
+                <div class="robot-image">
+                    <div class="win-loss-m">
+                        <span class="wins">W: 7</span> / <span class="losses">L: 2</span>
+                    </div>
+                    <div class="robot-name">FREE NOOGIES</div>
+                    <img src="../images/card-placeholder3.png">
+                </div>
+                <div class="robot-details">
+                    <div class="win-loss">
+                        <span class="wins">W: 9</span> / <span class="losses">L: 1</span>
+                        <span class="knockouts">KOs: 8</span>
+                    </div>
+                    <ul class="stats-list">
+                        <li>
+                            <span class="bot-name-m">Free Noogies</span>
+                        </li>
+                        <li>
+                            <span class="stat-label">Builder:</span>
+                            <span>Zack</span>
+                        </li>
+                        <li>
+                            <span class="stat-label">Class:</span>
+                            <span>Antweight</span>
+                        </li>
+                        <li>
+                            <span class="stat-label">Weapon:</span>
+                            <span>Hammer Saw</span>
+                        </li>
+                    </ul>
+                    <div class="robot-description">
+                        Free Noogies features a unique hammer saw weapon that combines downward force with cutting action. This bot has dominated its weight class with an impressive 8 KO victory record.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Robot Card 4 -->
+            <div class="robot-card">
+                <div class="robot-image">
+                    <div class="win-loss-m">
+                        <span class="wins">W: 7</span> / <span class="losses">L: 2</span>
+                    </div>
+                    <div class="robot-name">LUNCHPAD</div>
+                    <img src="../images/card-placeholder4.png">
+                </div>
+                <div class="robot-details">
+                    <div class="win-loss">
+                        <span class="wins">W: 4</span> / <span class="losses">L: 4</span>
+                        <span class="knockouts">KOs: 2</span>
+                    </div>
+                    <ul class="stats-list">
+                        <li>
+                            <span class="bot-name-m">Lunchpad</span>
+                        </li>
+                        <li>
+                            <span class="stat-label">Builder:</span>
+                            <span>Lando</span>
+                        </li>
+                        <li>
+                            <span class="stat-label">Class:</span>
+                            <span>Antweight</span>
+                        </li>
+                        <li>
+                            <span class="stat-label">Weapon:</span>
+                            <span>Spring Flipper</span>
+                        </li>
+                    </ul>
+                    <div class="robot-description">
+                        Lunchpad uses a spring-loaded flipper mechanism that can launch opponents across the arena. While not always resulting in KOs, its control style has earned it several judge's decisions.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Robot Card 5 -->
+            <div class="robot-card">
+                <div class="robot-image">
+                    <div class="win-loss-m">
+                        <span class="wins">W: 7</span> / <span class="losses">L: 2</span>
+                    </div>
+                    <div class="robot-name">MR. FLIP</div>
+                    <img src="../images/card-placeholder5.png">
+                </div>
+                <div class="robot-details">
+                    <div class="win-loss">
+                        <span class="wins">W: 4</span> / <span class="losses">L: 4</span>
+                        <span class="knockouts">KOs: 2</span>
+                    </div>
+                    <ul class="stats-list">
+                        <li>
+                            <span class="bot-name-m">Mr. Flip</span>
+                        </li>
+                        <li>
+                            <span class="stat-label">Builder:</span>
+                            <span>Lando</span>
+                        </li>
+                        <li>
+                            <span class="stat-label">Class:</span>
+                            <span>Fairyweight</span>
+                        </li>
+                        <li>
+                            <span class="stat-label">Weapon:</span>
+                            <span>Undercutter</span>
+                        </li>
+                    </ul>
+                    <div class="robot-description">
+                        
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
