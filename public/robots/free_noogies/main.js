@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
@@ -82,7 +83,13 @@ class RobotVisualizer {
     }
 
     loadModel() {
+        /* Draco loader for better performance */
+        const dracoLoader = new DRACOLoader();  
+        dracoLoader.setDecoderPath('../../js/draco/');  
+
         const loader = new GLTFLoader();
+        loader.setDRACOLoader(dracoLoader);
+
         loader.load(
             this.modelPath,
             (gltf) => {
@@ -227,4 +234,4 @@ setCameraSettings() {
 }
 
 // Initialize single robot instance
-const lunchpadVisualizer = new RobotVisualizer('visualizer', '../../gltfs/noogie-opt.glb');
+const lunchpadVisualizer = new RobotVisualizer('visualizer', '../../gltfs/noogie-opt.glb'); 

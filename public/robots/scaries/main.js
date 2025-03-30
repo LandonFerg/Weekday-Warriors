@@ -234,4 +234,4 @@ setCameraSettings() {
 }
 
 // Initialize single robot instance
-const lunchpadVisualizer = new RobotVisualizer('visualizer', '../../gltfs/nausea-opt.glb');
+const lunchpadVisualizer = new RobotVisualizer('visualizer', '../../gltfs/sunday-scaries-opt.glb');
