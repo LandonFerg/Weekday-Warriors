@@ -126,13 +126,18 @@ class RobotVisualizer {
                 this.outlinePass.selectedObjects = [this.model];
                 this.composer.render();
 
-                /* Special cases for these two */
+                /* Special cases for these */
                 if (this.modelPath.includes("nausea")) {
                     this.modelGroup.position.y = 0;
                 }
 
                 if (this.modelPath.includes("tonka")) {
                     this.modelGroup.position.y = 0;
+                }
+
+                // zoom out deadline
+                if (this.modelPath.includes("deadline")) {
+                    this.modelGroup.scale.set(0.9,0.9,0.9);
                 }
                 
                 // Hide loading indicator when model is loaded
@@ -330,6 +335,7 @@ class CarouselController {
         // Robot visualizers
         this.visualizers = [
             new RobotVisualizer('visualizer-1', '/public/gltfs/sunday-scaries-opt.glb'),
+            new RobotVisualizer('visualizer-6', '/public/gltfs/deadline-opt.glb'),
             new RobotVisualizer('visualizer-2', '/public/gltfs/noogie-opt.glb'),
             new RobotVisualizer('visualizer-3', '/public/gltfs/lp-opt-old.glb'),
             new RobotVisualizer('visualizer-4', '/public/gltfs/nausea-opt.glb'),
@@ -338,7 +344,9 @@ class CarouselController {
         
         // Set the first visualizer as active
         this.visualizers[0].setActive(true);
-        
+
+        // Zoom out dl_opt.glb here..
+
         this.setupEventListeners();
         this.startAnimation();
         
