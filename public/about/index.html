@@ -4,15 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico" />
-    <title>Weekday Warriors</title>
+    <title>Weekday Warriors - About</title>
     <!-- Get fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,112.3,100..900;1,112.3,100..900&family=Just+Another+Hand&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main-styles.css">
-    <script type="importmap">
-    </script>
+    <style>
+        .about-section {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            font-family: 'Archivo', sans-serif;
+        }
+
+        .about-container {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .person-row {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+            background-color: #333;
+            padding: 20px;
+            border-radius: 25px;
+        }
+
+        .person-image {
+            width: 264px;
+            height: 264px;
+            border-radius: 12px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .person-info {
+            flex: 1;
+        }
+
+        .person-name {
+            font-size: 3em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #eb6b1c;
+            font-family: 'Archivo', sans-serif;
+            font-weight: 900;
+            font-style: italic;
+            text-shadow:1px 1px 50px rgb(27, 27, 27);
+        }
+
+        .person-bio {
+            font-size: 40px;
+            line-height: 1.6;
+            color: rgb(200, 200, 200);
+            margin-bottom: 20px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .person-row {
+                flex-direction: column;
+                gap: 20px;
+                align-items: center;
+                text-align: center;
+            }
+
+            .person-image {
+                width: 200px;
+                height: 200px;
+            }
+
+            .person-name {
+                font-size: 1.8em;
+            }
+
+            .person-bio {
+                font-size: 1.4em;
+                line-height: 1.6;
+                color: rgb(200, 200, 200);
+                margin-bottom: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Main nav bar -->
@@ -28,8 +105,34 @@
 
     <!-- Title image -->
     <div class="content">
-        <img src="../wkdy_title.png" alt="Weekday Warriors" class="title-image">
-        </div>
+        <!-- <img src="../wkdy_title.png" alt="Weekday Warriors" class="title-image"> -->
+        
+        <!-- About Section -->
+        <section class="about-section">
+            <div class="about-container">
+                <!-- First Person -->
+                <div class="person-row">
+                    <img src="../images/zack.png" alt="Person 1" class="person-image">
+                    <div class="person-info">
+                        <h2 class="person-name">Zack</h2>
+                        <p class="person-bio">
+                            Builder of Sunday Scaries, Free Noogies, Mondaze, Fairy Scary, & Hammerhead.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Second Person -->
+                <div class="person-row">
+                    <img src="../images/lando.png" alt="Person 2" class="person-image">
+                    <div class="person-info">
+                        <h2 class="person-name">Lando</h2>
+                        <p class="person-bio">
+                            Builder of Deadline, Nausea, Lunchpad, Mr. Flip.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 
     <script type="module" src="../js/nav.js"></script>
