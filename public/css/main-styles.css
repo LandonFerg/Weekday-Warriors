@@ -118,6 +118,7 @@ canvas {
     display: flex;
     justify-content: center;
     margin-top: 20px;
+    touch-action: manipulation;
 }
 
 .carousel-button {
@@ -141,6 +142,7 @@ canvas {
     display: flex;
     justify-content: center;
     margin-top: 15px;
+    touch-action: manipulation;
 }
 
 .indicator {
@@ -150,6 +152,7 @@ canvas {
     background-color: #777;
     margin: 0 5px;
     cursor: pointer;
+    touch-action: manipulation;
 }
 
 .indicator.active {
